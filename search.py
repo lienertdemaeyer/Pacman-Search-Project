@@ -106,7 +106,11 @@ def depthFirstSearch(problem: SearchProblem) -> List[Directions]:
             for successor_state, action, stepCost in problem.getSuccessors(state):
                 if successor_state not in visited:  # Only add unvisited successors
                     stack.push((successor_state, path + [action]))
-    util.raiseNotDefined()
+
+                    
+            print("New Stack:", stack.list)  # Print the stack after pushing successors
+
+    return []  # Return an empty list if no solution is found
 
 def breadthFirstSearch(problem: SearchProblem) -> List[Directions]:
     """Search the shallowest nodes in the search tree first."""
