@@ -89,7 +89,23 @@ def depthFirstSearch(problem: SearchProblem) -> List[Directions]:
     print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
     print("Start's successors:", problem.getSuccessors(problem.getStartState()))
     """
-    "*** YOUR CODE HERE ***"
+    stack = util.Stack()  # Stack for DFS
+    start_state = problem.getStartState()
+    stack.push((start_state, []))  # Start state and empty path
+    visited = set()  # Set to track visited states
+
+    while not stack.isEmpty():  # Continue while there are states to explore
+        state, path = stack.pop()
+
+        if problem.isGoalState(state):  # If goal state is found, return the path
+            return path
+
+        if state not in visited:  # Only explore if state hasn't been visited
+            visited.add(state)  # Mark state as visited
+
+            for successor_state, action, stepCost in problem.getSuccessors(state):
+                if successor_state not in visited:  # Only add unvisited successors
+                    stack.push((successor_state, path + [action]))
     util.raiseNotDefined()
 
 def breadthFirstSearch(problem: SearchProblem) -> List[Directions]:
