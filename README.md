@@ -26,14 +26,14 @@ This project includes the following search algorithms, all implemented in Python
 Each algorithm is implemented in the `search.py` file, and the agents controlling Pacman are in the `searchAgents.py` file.
 
 ## Results
-Below is a table summarizing the performance of A* search on different maze layouts:
+The table below summarizes the performance of the A* search algorithm on different maze layouts:
 
 | Layout         | Search Nodes Expanded | Total Cost | Time Taken (seconds) |
 | -------------- | --------------------- | ---------- | -------------------- |
 | trickySearch   | 719                   | 60         | 7.9                  |
 | tinySearch     | 911                   | 27         | 2.3                  |
 
-To test these results run:
+You can reproduce these results by running the following commands:
 
 ```bash
 python pacman.py -l trickySearch -p AStarFoodSearchAgent
