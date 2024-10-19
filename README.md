@@ -21,7 +21,7 @@ This project includes the following search algorithms, all implemented in Python
 - **Depth-First Search (DFS)**: Explores the deepest nodes in the search tree first.
 - **Breadth-First Search (BFS)**: Explores the shallowest nodes first, ensuring the shortest path.
 - **Uniform-Cost Search (UCS)**: Expands the least-cost node first.
-- **A* Search (A\*)**: Combines UCS with a heuristic to improve search efficiency.
+- **A Search (A\*)**: Combines UCS with a heuristic to improve search efficiency.
   
 Each algorithm is implemented in the `search.py` file, and the agents controlling Pacman are in the `searchAgents.py` file.
 
