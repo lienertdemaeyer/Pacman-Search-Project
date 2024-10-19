@@ -477,11 +477,30 @@ def foodHeuristic(state: Tuple[Tuple, List[List]], problem: FoodSearchProblem):
     """
     position, foodGrid = state
     foodList = foodGrid.asList()
+
+    # If no food is left, heuristic is zero.
     if not foodList:
         return 0
-    # Calculate the Manhattan distance to the farthest food pellet
-    distances = [util.manhattanDistance(position, food) for food in foodList]
-    return max(distances)
+
+    # Initialize variables.
+    maxDistance = 0
+    heuristicInfo = problem.heuristicInfo
+
+    # Compute the maze distance to the farthest food pellet.
+    for food in foodList:
+        key = (position, food)
+        if key not in heuristicInfo:
+            # Compute the maze distance and cache it.
+            heuristicInfo[key] = util.manhattanDistance(position, food)
+        distance = heuristicInfo[key]
+        if distance > maxDistance:
+            maxDistance = distance
+
+    # Print out the current heuristicInfo cache to observe it in action
+    print("Heuristic Info Cache:", heuristicInfo)
+
+    # Return the maximum maze distance as the heuristic.
+    return maxDistance
 
 
 class ClosestDotSearchAgent(SearchAgent):
@@ -512,8 +531,8 @@ class ClosestDotSearchAgent(SearchAgent):
         walls = gameState.getWalls()
         problem = AnyFoodSearchProblem(gameState)
 
-        "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        from search import bfs 
+        return bfs(problem)
 
 class AnyFoodSearchProblem(PositionSearchProblem):
     """
@@ -546,10 +565,9 @@ class AnyFoodSearchProblem(PositionSearchProblem):
         The state is Pacman's position. Fill this in with a goal test that will
         complete the problem definition.
         """
-        x,y = state
 
-        "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        x, y = state
+        return self.food[x][y]
 
 def mazeDistance(point1: Tuple[int, int], point2: Tuple[int, int], gameState: pacman.GameState) -> int:
     """

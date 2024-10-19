@@ -108,7 +108,7 @@ def depthFirstSearch(problem: SearchProblem) -> List[Directions]:
                     stack.push((successor_state, path + [action]))
 
                     
-            print("New Stack:", stack.list)  # Print the stack after pushing successors
+            #print("New Stack:", stack.list)  # Print the stack after pushing successors
 
     return []  # Return an empty list if no solution is found
 
@@ -119,7 +119,7 @@ def breadthFirstSearch(problem: SearchProblem) -> List[Directions]:
     queue.push((start_state, []))  # Start state and empty path
     visited = set()  # Set to track visited states
 
-    print("start state is:", start_state)
+    #print("start state is:", start_state)
 
     while not queue.isEmpty():  # Continue while there are states to explore
         state, path = queue.pop()  # Get the next state and its path
@@ -137,7 +137,7 @@ def breadthFirstSearch(problem: SearchProblem) -> List[Directions]:
                     queue.push((successor_state, path + [action]))  # Push successor with updated path
 
 
-                print("New Stack:", queue.list)  # Print the stack after pushing successors
+                #print("New Stack:", queue.list)  # Print the stack after pushing successors
 
     return []  # Return an empty list if no solution is found
 
