@@ -192,34 +192,32 @@ def aStarSearch(problem: SearchProblem, heuristic=nullHeuristic) -> List[Directi
     # Initialize the priority queue with the start state, empty path, and zero cost
     priority_queue = util.PriorityQueue()
     start_state = problem.getStartState()
-    priority_queue.push((start_state, [], 0), heuristic(start_state, problem))
+    start_cost = 0
+    priority_queue.push((start_state, [], start_cost), start_cost + heuristic(start_state, problem))
 
-    # Dictionary to keep track of the best cost to reach a state
+    # Dictionary to track the lowest cost to reach each state
     cost_so_far = {}
     cost_so_far[start_state] = 0
 
     while not priority_queue.isEmpty():
-        # Pop the state with the lowest combined cost and heuristic
         state, path, current_cost = priority_queue.pop()
+
+        # If we've already processed a cheaper path to this state, skip it
+        if current_cost > cost_so_far.get(state, float('inf')):
+            continue
 
         # Check if the goal state is reached
         if problem.isGoalState(state):
             return path
 
-        # For each successor, update the cost and push into the priority queue
         for successor_state, action, stepCost in problem.getSuccessors(state):
             new_cost = current_cost + stepCost
-            if successor_state not in cost_so_far or new_cost < cost_so_far[successor_state]:
+
+            # If this path to successor is better than any previous one, process it
+            if new_cost < cost_so_far.get(successor_state, float('inf')):
                 cost_so_far[successor_state] = new_cost
                 priority = new_cost + heuristic(successor_state, problem)
                 priority_queue.push((successor_state, path + [action], new_cost), priority)
-
-        # Access and print the priority queue list for debugging
-        print("Current Queue (priority, state, path, cost):")
-        for item in priority_queue.heap:
-            print(item)
-
-        print("cost so far", cost_so_far)
 
     # Return an empty list if no solution is found
     return []

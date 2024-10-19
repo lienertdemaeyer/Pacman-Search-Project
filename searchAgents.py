@@ -413,23 +413,29 @@ class FoodSearchProblem:
         self.heuristicInfo = {} # A dictionary for the heuristic to store information
 
     def getStartState(self):
-        return self.start
+        # Convert foodGrid to a tuple of food positions
+        return (self.start[0], tuple(self.start[1].asList()))
 
     def isGoalState(self, state):
-        return state[1].count() == 0
+        # Goal is reached when there is no food left
+        return len(state[1]) == 0
 
     def getSuccessors(self, state):
-        "Returns successor states, the actions they require, and a cost of 1."
         successors = []
-        self._expanded += 1 # DO NOT CHANGE
+        self._expanded += 1  # DO NOT CHANGE
+        currentPosition, foodList = state
         for direction in [Directions.NORTH, Directions.SOUTH, Directions.EAST, Directions.WEST]:
-            x,y = state[0]
+            x, y = currentPosition
             dx, dy = Actions.directionToVector(direction)
             nextx, nexty = int(x + dx), int(y + dy)
             if not self.walls[nextx][nexty]:
-                nextFood = state[1].copy()
-                nextFood[nextx][nexty] = False
-                successors.append( ( ((nextx, nexty), nextFood), direction, 1) )
+                nextPosition = (nextx, nexty)
+                # Create a new list of food positions
+                nextFoodList = list(foodList)
+                if nextPosition in nextFoodList:
+                    nextFoodList.remove(nextPosition)
+                # Convert back to tuple to keep it immutable
+                successors.append(((nextPosition, tuple(nextFoodList)), direction, 1))
         return successors
 
     def getCostOfActions(self, actions):
@@ -475,32 +481,21 @@ def foodHeuristic(state: Tuple[Tuple, List[List]], problem: FoodSearchProblem):
     Subsequent calls to this heuristic can access
     problem.heuristicInfo['wallCount']
     """
-    position, foodGrid = state
-    foodList = foodGrid.asList()
-
-    # If no food is left, heuristic is zero.
+    position, foodList = state
     if not foodList:
         return 0
 
-    # Initialize variables.
-    maxDistance = 0
-    heuristicInfo = problem.heuristicInfo
+    # Use the sum of distances to the two furthest apart food dots
+    distances = [util.manhattanDistance(f1, f2) for f1 in foodList for f2 in foodList]
+    if distances:
+        max_distance_between_foods = max(distances)
+    else:
+        max_distance_between_foods = 0
 
-    # Compute the maze distance to the farthest food pellet.
-    for food in foodList:
-        key = (position, food)
-        if key not in heuristicInfo:
-            # Compute the maze distance and cache it.
-            heuristicInfo[key] = util.manhattanDistance(position, food)
-        distance = heuristicInfo[key]
-        if distance > maxDistance:
-            maxDistance = distance
+    # Distance from the current position to the closest food
+    distance_to_closest_food = min(util.manhattanDistance(position, food) for food in foodList)
 
-    # Print out the current heuristicInfo cache to observe it in action
-    print("Heuristic Info Cache:", heuristicInfo)
-
-    # Return the maximum maze distance as the heuristic.
-    return maxDistance
+    return max_distance_between_foods + distance_to_closest_food
 
 
 class ClosestDotSearchAgent(SearchAgent):
