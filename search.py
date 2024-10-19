@@ -214,6 +214,13 @@ def aStarSearch(problem: SearchProblem, heuristic=nullHeuristic) -> List[Directi
                 priority = new_cost + heuristic(successor_state, problem)
                 priority_queue.push((successor_state, path + [action], new_cost), priority)
 
+        # Access and print the priority queue list for debugging
+        print("Current Queue (priority, state, path, cost):")
+        for item in priority_queue.heap:
+            print(item)
+
+        print("cost so far", cost_so_far)
+
     # Return an empty list if no solution is found
     return []
 
