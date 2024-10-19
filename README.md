@@ -33,6 +33,16 @@ Below is a table summarizing the performance of A* search on different maze layo
 | trickySearch   | 719                   | 60         | 7.9                  |
 | tinySearch     | 911                   | 27         | 2.3                  |
 
+To test these results run:
+
+```bash
+python pacman.py -l trickySearch -p AStarFoodSearchAgent
+ ```
+
+```bash
+python pacman.py -l tinySearch -p AStarFoodSearchAgent
+```
+
 ## How to Run the Project
 To run this project on your local machine:
 
