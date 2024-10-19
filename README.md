@@ -6,6 +6,7 @@ This project implements several search algorithms to control Pacman in a variety
 - [Overview](#overview)
 - [Implemented Algorithms](#implemented-algorithms)
 - [How to Run the Project](#how-to-run-the-project)
+- [Results](#results)
 - [Files and Directories](#files-and-directories)
 - [Autograder](#autograder)
 - [Acknowledgments](#acknowledgments)
@@ -20,7 +21,7 @@ This project includes the following search algorithms, all implemented in Python
 - **Depth-First Search (DFS)**: Explores the deepest nodes in the search tree first.
 - **Breadth-First Search (BFS)**: Explores the shallowest nodes first, ensuring the shortest path.
 - **Uniform-Cost Search (UCS)**: Expands the least-cost node first.
-- **A* Search (A*)**: Combines UCS with a heuristic to improve search efficiency.
+- **A* Search (A\*)**: Combines UCS with a heuristic to improve search efficiency.
   
 Each algorithm is implemented in the `search.py` file, and the agents controlling Pacman are in the `searchAgents.py` file.
 
@@ -97,8 +98,25 @@ To run this project on your local machine:
 - **`-a fn=depthFirstSearch`**: Specifies the search function to use (DFS, BFS, UCS, or A*).
   - For A*, you can also specify a **heuristic** (e.g., `manhattanHeuristic`), which helps estimate the cost to reach the goal.
 
-### Overview of Search Algorithms:
-- **DFS**: Explores deep paths first (not necessarily optimal).
-- **BFS**: Explores shallow paths first, guaranteeing the shortest path.
-- **UCS**: Guarantees the least-cost path in terms of cost.
-- **A\***: Guarantees the least-cost path using a heuristic to improve efficiency.
+## Results
+Below is a table summarizing the performance of A* search on different maze layouts:
+
+| Layout         | Search Nodes Expanded | Total Cost | Time Taken (seconds) |
+| -------------- | --------------------- | ---------- | -------------------- |
+| trickySearch   | 719                   | 60         | 7.9                  |
+| tinySearch     | 911                   | 27         | 2.3                  |
+
+## Files and Directories
+- **`search.py`**: Contains the implementations of search algorithms.
+- **`searchAgents.py`**: Contains the agents that use the search algorithms to control Pacman.
+- **`pacman.py`**: The main file to run the game.
+- **`autograder.py`**: Autograder for testing the correctness of your implementations.
+
+## Autograder
+To run the autograder and check if your implementations are correct, use:
+```bash
+python autograder.py
+```
+
+## Acknowledgments
+This project was developed as part of the AI course at UC Berkeley. The Pacman AI projects were created by John DeNero and Dan Klein. Autograding was added by Brad Miller, Nick Hay, and Pieter Abbeel.
