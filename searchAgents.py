@@ -458,15 +458,15 @@ def foodHeuristic(state: Tuple[Tuple, List[List]], problem: FoodSearchProblem):
     Subsequent calls to this heuristic can access
     problem.heuristicInfo['wallCount']
     """
-    position, foodList = state
-    if not foodList:
+    position, foodPositions = state
+    if not foodPositions:
         return 0
-    distances = [util.manhattanDistance(f1, f2) for f1 in foodList for f2 in foodList]
+    distances = [mazeDistance(f1, f2, problem.startingGameState) for f1 in foodPositions for f2 in foodPositions]
     if distances:
         max_distance_between_foods = max(distances)
     else:
         max_distance_between_foods = 0
-    distance_to_closest_food = min(util.manhattanDistance(position, food) for food in foodList)
+    distance_to_closest_food = min(mazeDistance(position, food, problem.startingGameState) for food in foodPositions)
     return max_distance_between_foods + distance_to_closest_food
 
 
