@@ -25,6 +25,14 @@ This project includes the following search algorithms, all implemented in Python
   
 Each algorithm is implemented in the `search.py` file, and the agents controlling Pacman are in the `searchAgents.py` file.
 
+## Results
+Below is a table summarizing the performance of A* search on different maze layouts:
+
+| Layout         | Search Nodes Expanded | Total Cost | Time Taken (seconds) |
+| -------------- | --------------------- | ---------- | -------------------- |
+| trickySearch   | 719                   | 60         | 7.9                  |
+| tinySearch     | 911                   | 27         | 2.3                  |
+
 ## How to Run the Project
 To run this project on your local machine:
 
@@ -98,13 +106,6 @@ To run this project on your local machine:
 - **`-a fn=depthFirstSearch`**: Specifies the search function to use (DFS, BFS, UCS, or A*).
   - For A*, you can also specify a **heuristic** (e.g., `manhattanHeuristic`), which helps estimate the cost to reach the goal.
 
-## Results
-Below is a table summarizing the performance of A* search on different maze layouts:
-
-| Layout         | Search Nodes Expanded | Total Cost | Time Taken (seconds) |
-| -------------- | --------------------- | ---------- | -------------------- |
-| trickySearch   | 719                   | 60         | 7.9                  |
-| tinySearch     | 911                   | 27         | 2.3                  |
 
 ## Files and Directories
 - **`search.py`**: Contains the implementations of search algorithms.
