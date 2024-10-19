@@ -26,7 +26,7 @@ This project includes the following search algorithms, all implemented in Python
 Each algorithm is implemented in the `search.py` file, and the agents controlling Pacman are in the `searchAgents.py` file.
 
 ## Results
-The table below summarizes the performance of the A* search algorithm on different maze layouts:
+The table below summarizes the performance of the A* search algorithm on _Eating all the dots_ for different maze layouts:
 
 | Layout         | Search Nodes Expanded | Total Cost | Time Taken (seconds) |
 | -------------- | --------------------- | ---------- | -------------------- |
