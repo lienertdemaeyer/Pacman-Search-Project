@@ -288,7 +288,7 @@ class CornersProblem(search.SearchProblem):
         for corner in self.corners:
             if not startingGameState.hasFood(*corner):
                 print('Warning: no food in corner ' + str(corner))
-        self._expanded = 0 # DO NOT CHANGE; Number of search nodes expanded
+        self._expanded = 0 
 
     def getStartState(self):
         """
@@ -316,27 +316,17 @@ class CornersProblem(search.SearchProblem):
         """
         successors = []
         pacman_position, visited_corners = state
-
-        # Explore all four possible actions
         for action in [Directions.NORTH, Directions.SOUTH, Directions.EAST, Directions.WEST]:
             x, y = pacman_position
             dx, dy = Actions.directionToVector(action)
             next_x, next_y = int(x + dx), int(y + dy)
-
-            # Ensure next position is not a wall
             if not self.walls[next_x][next_y]:
                 next_position = (next_x, next_y)
-                # Copy visited corners list
                 new_visited_corners = list(visited_corners)
-
-                # If the new position is a corner, mark it as visited
                 if next_position in self.corners:
                     corner_index = self.corners.index(next_position)
                     new_visited_corners[corner_index] = True
-
-                # Append the successor: ((next position, updated visited corners), action, cost)
                 successors.append(((next_position, tuple(new_visited_corners)), action, 1))
-
         self._expanded += 1  
         return successors
 
@@ -368,24 +358,15 @@ def cornersHeuristic(state: Any, problem: CornersProblem):
     shortest path from the state to a goal of the problem; i.e.  it should be
     admissible.
     """
-    corners = problem.corners # These are the corner coordinates
-    walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
-
+    corners = problem.corners 
+    walls = problem.walls 
     pacman_position, visited_corners = state
     corners = problem.corners
     walls = problem.walls
-
-    # Get the list of unvisited corners
     unvisited_corners = [corner for i, corner in enumerate(corners) if not visited_corners[i]]
-
-    # If all corners have been visited, the heuristic is 0
     if not unvisited_corners:
         return 0
-
-    # Calculate the Manhattan distance to the nearest unvisited corner
     distances = [util.manhattanDistance(pacman_position, corner) for corner in unvisited_corners]
-
-    # Return the maximum distance to any unvisited corner
     return max(distances)
 
 
@@ -409,20 +390,18 @@ class FoodSearchProblem:
         self.start = (startingGameState.getPacmanPosition(), startingGameState.getFood())
         self.walls = startingGameState.getWalls()
         self.startingGameState = startingGameState
-        self._expanded = 0 # DO NOT CHANGE
-        self.heuristicInfo = {} # A dictionary for the heuristic to store information
+        self._expanded = 0 
+        self.heuristicInfo = {}
 
     def getStartState(self):
-        # Convert foodGrid to a tuple of food positions
         return (self.start[0], tuple(self.start[1].asList()))
 
     def isGoalState(self, state):
-        # Goal is reached when there is no food left
         return len(state[1]) == 0
 
     def getSuccessors(self, state):
         successors = []
-        self._expanded += 1  # DO NOT CHANGE
+        self._expanded += 1
         currentPosition, foodList = state
         for direction in [Directions.NORTH, Directions.SOUTH, Directions.EAST, Directions.WEST]:
             x, y = currentPosition
@@ -430,11 +409,9 @@ class FoodSearchProblem:
             nextx, nexty = int(x + dx), int(y + dy)
             if not self.walls[nextx][nexty]:
                 nextPosition = (nextx, nexty)
-                # Create a new list of food positions
                 nextFoodList = list(foodList)
                 if nextPosition in nextFoodList:
                     nextFoodList.remove(nextPosition)
-                # Convert back to tuple to keep it immutable
                 successors.append(((nextPosition, tuple(nextFoodList)), direction, 1))
         return successors
 
@@ -484,17 +461,12 @@ def foodHeuristic(state: Tuple[Tuple, List[List]], problem: FoodSearchProblem):
     position, foodList = state
     if not foodList:
         return 0
-
-    # Use the sum of distances to the two furthest apart food dots
     distances = [util.manhattanDistance(f1, f2) for f1 in foodList for f2 in foodList]
     if distances:
         max_distance_between_foods = max(distances)
     else:
         max_distance_between_foods = 0
-
-    # Distance from the current position to the closest food
     distance_to_closest_food = min(util.manhattanDistance(position, food) for food in foodList)
-
     return max_distance_between_foods + distance_to_closest_food
 
 
@@ -546,21 +518,17 @@ class AnyFoodSearchProblem(PositionSearchProblem):
 
     def __init__(self, gameState):
         "Stores information from the gameState.  You don't need to change this."
-        # Store the food for later reference
         self.food = gameState.getFood()
-
-        # Store info for the PositionSearchProblem (no need to change this)
         self.walls = gameState.getWalls()
         self.startState = gameState.getPacmanPosition()
         self.costFn = lambda x: 1
-        self._visited, self._visitedlist, self._expanded = {}, [], 0 # DO NOT CHANGE
+        self._visited, self._visitedlist, self._expanded = {}, [], 0
 
     def isGoalState(self, state: Tuple[int, int]):
         """
         The state is Pacman's position. Fill this in with a goal test that will
         complete the problem definition.
         """
-
         x, y = state
         return self.food[x][y]
 

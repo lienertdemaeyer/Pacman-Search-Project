@@ -89,95 +89,63 @@ def depthFirstSearch(problem: SearchProblem) -> List[Directions]:
     print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
     print("Start's successors:", problem.getSuccessors(problem.getStartState()))
     """
-    stack = util.Stack()  # Stack for DFS
+    stack = util.Stack() 
     start_state = problem.getStartState()
-    stack.push((start_state, []))  # Start state and empty path
-    visited = set()  # Set to track visited states
+    stack.push((start_state, []))  
+    visited = set()  
 
-    while not stack.isEmpty():  # Continue while there are states to explore
+    while not stack.isEmpty(): 
         state, path = stack.pop()
-
-        if problem.isGoalState(state):  # If goal state is found, return the path
+        if problem.isGoalState(state): 
             return path
-
-        if state not in visited:  # Only explore if state hasn't been visited
-            visited.add(state)  # Mark state as visited
-
+        if state not in visited: 
+            visited.add(state) 
             for successor_state, action, stepCost in problem.getSuccessors(state):
-                if successor_state not in visited:  # Only add unvisited successors
+                if successor_state not in visited:  
                     stack.push((successor_state, path + [action]))
 
-                    
-            #print("New Stack:", stack.list)  # Print the stack after pushing successors
-
-    return []  # Return an empty list if no solution is found
+    return [] 
 
 def breadthFirstSearch(problem: SearchProblem) -> List[Directions]:
     """Search the shallowest nodes in the search tree first."""
-    queue = util.Queue()  # Queue for BFS
+    queue = util.Queue() 
     start_state = problem.getStartState()
-    queue.push((start_state, []))  # Start state and empty path
-    visited = set()  # Set to track visited states
+    queue.push((start_state, []))  
+    visited = set()  
 
-    #print("start state is:", start_state)
-
-    while not queue.isEmpty():  # Continue while there are states to explore
-        state, path = queue.pop()  # Get the next state and its path
-
-        
-
-        if problem.isGoalState(state):  # If goal state is found, return the path
+    while not queue.isEmpty(): 
+        state, path = queue.pop() 
+        if problem.isGoalState(state): 
             return path
-
-        if state not in visited:  # Only explore if state hasn't been visited
-            visited.add(state)  # Mark state as visited
-
+        if state not in visited: 
+            visited.add(state) 
             for successor_state, action, stepCost in problem.getSuccessors(state):
-                if successor_state not in visited:  # Only add unvisited successors
-                    queue.push((successor_state, path + [action]))  # Push successor with updated path
-
-
-                #print("New Stack:", queue.list)  # Print the stack after pushing successors
-
-    return []  # Return an empty list if no solution is found
+                if successor_state not in visited: 
+                    queue.push((successor_state, path + [action])) 
+    return []
 
 
 def uniformCostSearch(problem: SearchProblem) -> List[Directions]:
     """Search the node of least total cost first."""
-    # Initialize the priority queue with the start state, empty path, and zero cost
     priority_queue = util.PriorityQueue()
     start_state = problem.getStartState()
     priority_queue.push((start_state, [], 0), 0)
-
-    # Dictionary to track the lowest cost to reach each state
-    cost_so_far = {}  # Key: state, Value: cost so far
-    cost_so_far[start_state] = 0
+    path_cost = {}  
+    path_cost[start_state] = 0
 
     while not priority_queue.isEmpty():
-        # Pop the state with the lowest cumulative cost
         state, path, current_cost = priority_queue.pop()
-
-        # Check if the goal state is reached
         if problem.isGoalState(state):
             return path
-
-        # Expand the node by pushing all successors into the priority queue
         for successor_state, action, stepCost in problem.getSuccessors(state):
             new_cost = current_cost + stepCost
-
-            # Only push if the successor hasn't been explored or if a cheaper cost is found
-            if successor_state not in cost_so_far or new_cost < cost_so_far[successor_state]:
-                cost_so_far[successor_state] = new_cost
+            if successor_state not in path_cost or new_cost < path_cost[successor_state]:
+                path_cost[successor_state] = new_cost
                 priority_queue.push((successor_state, path + [action], new_cost), new_cost)
-
-        # Access and print the priority queue list for debugging
-        print("Current Queue (priority, state, path, cost):")
         for item in priority_queue.heap:
             print(item)
-
-        print("cost so far", cost_so_far)
-
     return []
+
 
 
 def nullHeuristic(state, problem=None) -> float:
@@ -189,38 +157,28 @@ def nullHeuristic(state, problem=None) -> float:
 
 def aStarSearch(problem: SearchProblem, heuristic=nullHeuristic) -> List[Directions]:
     """Search the node that has the lowest combined cost and heuristic first."""
-    # Initialize the priority queue with the start state, empty path, and zero cost
     priority_queue = util.PriorityQueue()
     start_state = problem.getStartState()
     start_cost = 0
     priority_queue.push((start_state, [], start_cost), start_cost + heuristic(start_state, problem))
-
-    # Dictionary to track the lowest cost to reach each state
-    cost_so_far = {}
-    cost_so_far[start_state] = 0
+    path_cost = {}
+    path_cost[start_state] = 0
 
     while not priority_queue.isEmpty():
         state, path, current_cost = priority_queue.pop()
-
-        # If we've already processed a cheaper path to this state, skip it
-        if current_cost > cost_so_far.get(state, float('inf')):
+        if current_cost > path_cost.get(state, float('inf')):
             continue
-
-        # Check if the goal state is reached
         if problem.isGoalState(state):
             return path
-
         for successor_state, action, stepCost in problem.getSuccessors(state):
             new_cost = current_cost + stepCost
-
-            # If this path to successor is better than any previous one, process it
-            if new_cost < cost_so_far.get(successor_state, float('inf')):
-                cost_so_far[successor_state] = new_cost
+            if new_cost < path_cost.get(successor_state, float('inf')):
+                path_cost[successor_state] = new_cost
                 priority = new_cost + heuristic(successor_state, problem)
                 priority_queue.push((successor_state, path + [action], new_cost), priority)
 
-    # Return an empty list if no solution is found
     return []
+
 
 # Abbreviations
 bfs = breadthFirstSearch
